@@ -11,4 +11,18 @@ jobs:
       - name: Printing Folders
         run: ls
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: 04-using-actions/create-app
 
+
+
+#0. Check out code form repo because sometimes workflows don't have access to the code
+#1. Install dependencies
+#2. Run tests
+#3. Build app
+#4. Deploy app
