@@ -11,9 +11,15 @@ on:
         type: boolean
         default: false
         description: "Enable debug mode"
+env:
+  MY_WORKFLOW_VAR: "workflow"
+  MY_OVERWRITTEN_VAR: "workflow level"; "
 jobs:
   echo-data:
     runs-on: ubuntu-latest
+    env:
+      MY_JOB_VAR: "job"
+      MY_OVERWRITTEN_JOB_VAR: "job level"
     steps:
      - name: Display Information
        run: |
@@ -29,6 +35,11 @@ jobs:
      - name: Retrieve Variable
        run: |
          echo " Repository variable: ${{vars.MY_VAR}}"
-         
+     - name: Print Env Varibles
+       run: |
+        echo "Workflow variable: ${{env.MY_WORKFLOW_VAR}}"
+        echo "Overwritten workflow variable: ${{env.MY_OVERWRITTEN_VAR}}"
+        echo "Job variable: ${{env.MY_JOB_VAR}}"
+        echo "Overwritten variable: ${{env.MY_OVERWRITTEN_JOB_VAR}}"
          
          
