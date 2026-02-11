@@ -13,7 +13,7 @@ jobs:
    echo:
     runs-on: ubuntu-latest
     steps:
-      - name: Print startup data - ${{inputs.debug}}
+      - name: "[Debug] Print startup data - ${{inputs.debug}}"
         if: ${{ inputs.debug }}
         run: |
           echo "Triggered by: ${{github.event_name}}"
@@ -22,7 +22,7 @@ jobs:
           echo "Runner OS: ${{runner.os}}"
           echo "Actor: ${{github.actor}}"
 
-      - name: Print when triggered from main - ${{inputs.debug}}
+      - name: "[Debug] Print when triggered from main - ${{inputs.debug}}"
         if: ${{github.ref == 'refs/heads/main' && inputs.debug}}
         run: |
           echo "This workflow is triggered from main branch"
