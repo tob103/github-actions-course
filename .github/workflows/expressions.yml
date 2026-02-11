@@ -1,0 +1,31 @@
+name: 07 - Using Expressions
+run-name: 07 - Using Expressions | DEBUG - ${{inputs.debug == true && 'ON' || 'OFF'}}
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      debug:
+        type: boolean
+        default: false
+        description: Enable debug mode
+
+jobs:
+   echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print startup data - ${{inputs.debug}}
+        if: ${{ inputs.debug }}
+        run: |
+          echo "Triggered by: ${{github.event_name}}"
+          echo "Branch: ${{github.ref}}"
+          echo "Commit SHA: ${{github.sha}}"
+          echo "Runner OS: ${{runner.os}}"
+          echo "Actor: ${{github.actor}}"
+
+      - name: Print when triggered from main - ${{inputs.debug}}
+        if: ${{github.ref == 'refs/heads/main' && inputs.debug}}
+        run: |
+          echo "This workflow is triggered from main branch"
+
+      - name: Greeting
+        run: echo "Hello ${{github.actor}}! Hello World"
