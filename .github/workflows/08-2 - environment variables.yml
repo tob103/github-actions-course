@@ -1,4 +1,4 @@
-name: 08- Using Variables
+name: 08- Using Environments Variables
 on:
   #push:
   workflow_dispatch:
