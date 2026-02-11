@@ -38,7 +38,7 @@ jobs:
     steps:
       - name: Print Variables
         run: |
-          echo "Repo variable: ${{vars.REPOSITORY_VAR}}
+          echo "Repo variable: ${{vars.REPOSITORY_VAR}}"
           echo "Environment: ${{vars.TARGET_VAR}}"
 
   echo-prod:
@@ -48,7 +48,7 @@ jobs:
       - name: Print Prod Variables
         run: |
           echo "Repo variable: ${{vars.REPOSITORY_VAR}}"
-          echo "Environment: ${{vars.TARGET_VAR}}
+          echo "Environment: ${{vars.TARGET_VAR}}"
 
   echo-undefined:
     runs-on: ubuntu-latest
