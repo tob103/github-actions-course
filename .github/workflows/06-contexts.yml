@@ -13,7 +13,7 @@ on:
         description: "Enable debug mode"
 env:
   MY_WORKFLOW_VAR: "workflow"
-  MY_OVERWRITTEN_VAR: "workflow level"; "
+  MY_OVERWRITTEN_VAR: "workflow level"
 jobs:
   echo-data:
     runs-on: ubuntu-latest
