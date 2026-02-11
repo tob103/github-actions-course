@@ -6,7 +6,7 @@ on:
 env:
   MY_WORKFLOW_VAR: I am a workflow env var
   MY_OVERWRITTEN_VAR: I will be overwritten
-
+  UNDEFINED_VAR_WITH_DEFAULT: ${{vars.UNDEFINED_VAR || 'default value'}}"
 jobs:
   echo:
     runs-on: ubuntu-latest
@@ -32,4 +32,28 @@ jobs:
             echo "Step environment variable: $MY_OVERWRITTEN_VAR"
             echo "Another way to access step variable: ${{env.MY_OVERWRITTEN_VAR}}"
           
-          
+  echo2:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Print Variables
+        run: |
+          echo "Repo variable: ${{vars.REPOSITORY_VAR}}
+          echo "Environment: ${{vars.TARGET_VAR}}"
+
+  echo-prod:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Print Prod Variables
+        run: |
+          echo "Repo variable: ${{vars.REPOSITORY_VAR}}"
+          echo "Environment: ${{vars.TARGET_VAR}}
+
+  echo-undefined:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Undefined Variable
+        run: |
+          echo "Undefined variable: ${{vars.UNDEFINED_VAR_WITH_DEFAULT}}"
+
