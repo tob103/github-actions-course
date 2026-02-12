@@ -13,7 +13,6 @@ jobs:
        - name: Failing Step
          run: | 
           echo "Hello World"
-          exit 1
 
        - name: I will be skipped
          if: ${{success() }}
