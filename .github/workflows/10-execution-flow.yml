@@ -15,14 +15,15 @@ jobs:
        run: echo "Linting and building project"
 
   unit-tests:
-    continue-on-error: true
+    #continue-on-error: true
     runs-on: ubuntu-latest
     steps:
      - name: Run unit tests
        run: echo "Running unit tests..."
 
      - name: Failing unit tests
-       if: inputs.pass-unit-tests == false
+       if : ${{ inputs.pass-unit-tests == false }}
+       #if: inputs.pass-unit-tests == false
        run: exit 1
 
   deploy-nonprod:
