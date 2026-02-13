@@ -14,7 +14,10 @@ on:
 
       tag:
         type: choice
-        options: ["v1, v2, v3"]
+        options:
+         - v1
+         - v2
+         - v3
         default: "v3"
         description: "Which version of the application to deploy"
 jobs:
