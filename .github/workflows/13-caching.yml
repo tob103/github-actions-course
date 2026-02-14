@@ -1,4 +1,43 @@
-name: 13-caching.yml
+name: 13-Using Caching
 on:
-
+  workflow_dispatch:
+    inputs:
+      use-cache:
+        type: boolean
+        default: true
+        description: "Use caching"
+      target:
+        type: environment
+        required: true
+        description: "Which environment will the workflow target"
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 13-caching/react-app
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Testing
+        run: npm run test
+
+      - name: Building
+        run: npm run build
+
+      - name: Deploy
+        run: echo "Deploying to ${{ inputs.target }}"
+
+
+
+
+
