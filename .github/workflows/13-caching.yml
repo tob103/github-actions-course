@@ -18,6 +18,7 @@ on:
           - '18.x'
           - '20.x'
           - '21.x'
+          - '22.x'
         default: '20.x'
 
 
@@ -47,7 +48,7 @@ jobs:
       - name: Install Dependencies
         if:  steps.cache.outputs.cache-hit != 'true'
         run: |
-          echo "Cache hit! Installing dependencies"
+          echo "Cache hit missed! Installing dependencies"
           npm ci
 
       - name: Testing
