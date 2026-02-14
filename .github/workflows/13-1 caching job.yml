@@ -1,0 +1,139 @@
+name: 13-Using a Caching Job
+on:
+  workflow_dispatch:
+    inputs:
+      use-cache:
+        type: boolean
+        default: true
+        description: "Use caching"
+      target:
+        type: environment
+        required: true
+        description: "Which environment will the workflow target"
+      node-version:
+        type: choice
+        required: true
+        description: "Node version to use"
+        options:
+          - '18.x'
+          - '20.x'
+          - '21.x'
+          - '22.x'
+        default: '20.x'
+
+
+jobs:
+  install-deps:
+    runs-on: ubuntu-latest
+    outputs:
+      cache_key: ${{ steps.cache_key.outputs.cache_key }}
+    defaults:
+      run:
+        working-directory: 13-caching/react-app
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{inputs.node-version}}
+
+      - name: Calculate Cache Key
+        id: cache_key
+        run: |
+          echo "cache_key=${{ hashFiles('13-caching/react-app/package-lock.json') }}" >> $GITHUB_OUTPUT
+
+      - name: Download Cache Dependencies
+        id: cache
+        if: ${{inputs.use-cache}}
+        uses: actions/cache@v4
+        with:
+          path: 13-caching/react-app/node_modules
+          key: ${{ steps.cache_key.outputs.cache_key }}
+
+      - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache hit missed! Installing dependencies"
+          npm ci
+
+  linting:
+    runs-on: ubuntu-latest
+    needs: install-deps
+    defaults:
+      run:
+        working-directory: 13-caching/react-app
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{inputs.node-version}}
+
+      - name: Calculate Cache Key
+        id: cache_key
+        run: |
+          echo "cache_key=${{ hashFiles('13-caching/react-app/package-lock.json') }}" >> $GITHUB_OUTPUT
+
+      - name: Download Cache Dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: 13-caching/react-app/node_modules
+          key: ${{ needs.install-deps.outputs.cache_key }}
+
+      - name: Testing
+        run: npm run test
+
+      - name: Linting
+        run: echo "Linting"
+
+  build:
+    runs-on: ubuntu-latest
+    needs: install-deps
+    defaults:
+      run:
+        working-directory: 13-caching/react-app
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{inputs.node-version}}
+
+      - name: Calculate Cache Key
+        id: cache_key
+        run: |
+          echo "cache_key=${{ hashFiles('13-caching/react-app/package-lock.json') }}" >> $GITHUB_OUTPUT
+
+      - name: Download Cache Dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: 13-caching/react-app/node_modules
+          key: ${{ needs.install-deps.outputs.cache_key }}
+
+      - name: Install Dependencies
+        if:  steps.cache.outputs.cache-hit != 'true'
+        run: |
+          echo "Cache hit missed! Installing dependencies"
+          npm ci
+
+      - name: Testing
+        run: npm run test
+
+      - name: Building
+        run: npm run build
+
+      - name: Deploy
+        run: echo "Deploying to ${{ inputs.target }}"
+
+
+
+
+
