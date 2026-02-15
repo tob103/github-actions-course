@@ -22,7 +22,7 @@ on:
           - '24.x'
         default: '23.x'
 env:
-    build-artifact key: app-${{github.sha}}
+    build-artifact-key: app-${{github.sha}}
     test-coverage-key: test-coverage-${{github.sha}}
 
 jobs:
