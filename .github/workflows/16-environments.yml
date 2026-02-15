@@ -1,0 +1,20 @@
+name: 16 - Working with Environments  | env ${{ inputs.target-env }}
+on:
+  workflow_dispatch:
+    inputs:
+      target-env:
+        type: environment
+        required: true
+        default: "staging"
+        description: "Target environment to deploy to"
+
+jobs:
+   echo:
+     runs-on: ubuntu-latest
+     env:
+       my_env_value : ${{ vars.target_env || 'default value' }}
+     steps:
+      - name: Echo vars
+        run: |
+          echo "Deploying to ${{ inputs.target-env }}"
+          echo "Env variable: ${{ env.my_env_value }}"
