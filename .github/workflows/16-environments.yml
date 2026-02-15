@@ -6,7 +6,7 @@ on:
       target-env:
         type: environment
         required: true
-        default: "staging"
+        default: "prod"
         description: "Target environment to deploy to"
 
 jobs:
