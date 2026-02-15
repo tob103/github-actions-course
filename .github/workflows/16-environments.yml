@@ -13,7 +13,7 @@ jobs:
    echo:
      runs-on: ubuntu-latest
      env:
-       my_env_value : ${{ vars.MY_ENV_VALUE || 'default value' }}
+       my_env_value: ${{ vars.MY_ENV_VALUE || 'default value' }}
      steps:
       - name: Echo vars
         run: |
