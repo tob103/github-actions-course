@@ -12,6 +12,7 @@ on:
 jobs:
    echo:
      runs-on: ubuntu-latest
+     environment: ${{ inputs.target-env }}
      env:
        my_env_value: ${{ vars.MY_ENV_VALUE || 'default value' }}
      steps:
