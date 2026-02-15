@@ -7,6 +7,7 @@ jobs:
     name: ${{matrix.os}} - ${{matrix.node-version}}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         node-version: ["18.x", "20.x", "22.x"]
         os: ["ubuntu-latest", "windows-latest"]
@@ -16,7 +17,9 @@ jobs:
           - node-version: "22.x"
             tag: experimental
             os: "ubuntu-latest"
-            fail-fast: false
+        exclude:
+          - os: "windows-latest"
+
 
     steps:
     - name: Setup node
@@ -34,3 +37,24 @@ jobs:
 
     - name: Upload Test Results
       run: echo "Uploading test results to GitHub"
+
+  include-example:
+    name: ${{ matrix.color }} - ${{ matrix.size }} - ${{ matrix.shape }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        color: [red, green, blue]
+        size: [small, large]
+        shape: [circle, square]
+
+        include:
+        - color: yellow
+          size: medium
+          shape: triangle
+
+    steps:
+     - name: Print matrix
+       run: echo "Color - ${{ matrix.color }} Size - ${{ matrix.size }} Shape - ${{ matrix.shape }}"
+
+
