@@ -1,0 +1,35 @@
+name: 15 - Workign with Matrices
+on:
+  workflow_dispatch:
+
+jobs:
+  backwards-compatibility:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["18.x", "20.x", "22.x"]
+        os: ["ubuntu-latest", "windows-latest"]
+        include:
+          - node-version: "18.x"
+            os: "ubuntu-latest"
+          - node-version: "22.x"
+            tag: experimental
+            os: "ubuntu-latest"
+            fail-fast: false
+
+    steps:
+    - name: Setup node
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+
+    - name: Fail if experimental
+      if: matrix.tag == 'experimental'
+      run: exit 1
+
+    - name: Perform some Tests
+      run: echo "Running tests on ${{ matrix.os }} with Node ${{ matrix.node-version }}"
+
+    - name: Upload Test Results
+      run: echo "Uploading test results to GitHub"
