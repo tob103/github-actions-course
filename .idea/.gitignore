@@ -11,4 +11,5 @@
 # Zeppelin ignored files
 /ZeppelinRemoteNotebooks/
 
+!.github/actions/**/node_modules
 node_modules
