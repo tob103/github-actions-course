@@ -19,7 +19,7 @@ runs:
   steps:
     - name: Setup NodeJS version ${{inputs.node-version}}
       id: node-version-setup
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{inputs.node-version}}
     - name: Cache NPM Dependencies
