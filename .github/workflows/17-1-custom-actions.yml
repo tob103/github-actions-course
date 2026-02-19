@@ -11,26 +11,19 @@ on:
           - dev
           - prod
         default: dev
-  env:
-    working-directory: 17-custo-actions/react-app
+env:
+  working-directory: 17-custom-actions/react-app
 jobs:
   build:
     runs-on: ubuntu-latest
-    working-directory: ${{env.working-directory}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Node and NPM Dependencies
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-
-      - name: Cache Dependencies
         uses: ./.github/actions/composite-cache-deps
         with:
           node-version: '20.x'
-          working-dir: ${{env.working-directory}}
 
       - name: Test
         run: npm run test
