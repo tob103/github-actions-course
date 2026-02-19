@@ -28,6 +28,8 @@ jobs:
 
       - name: Test
         run: npm run test
+        with:
+          working-dir: ${{ env.working-directory }}
 
       - name: Build
         run: npm run build
