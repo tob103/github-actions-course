@@ -55,15 +55,27 @@ async function run() {
     }
     else{
         core.info('[js-dependency-update]: Updates found')
-        await exec.exec('git config --global user.name "gh-automation', [], {
+        await exec.exec('git config --global user.name "gh-automation"', [], {
             cwd: commonExecOpts
         });
 
-        await exec.exec('git config --global user.email "gh-automation@github.com', [], {
+        await exec.exec('git config --global user.email "gh-automation@github.com"', [], {
             cwd: commonExecOpts
         });
 
-        await exec.exec('git checkout -b ${targetBranch}', [], {
+        await exec.exec(`git checkout -b ${targetBranch}`, [], {
+            cwd: commonExecOpts
+        });
+
+        await exec.exec('git add package*.json', [], {
+            cwd: commonExecOpts
+        });
+
+        await exec.exec('git commit -m "Update NPM dependencies"', [], {
+            cwd: commonExecOpts
+        });
+
+        await exec.exec(`git push origin ${targetBranch}`, [], {
             cwd: commonExecOpts
         });
 
