@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const exec = require('@actions/exec');
+const github = require('@actions/github');
 
 const validateBranchName = ({branchName}) =>
     (/^[a-zA-z0-9_\-./]+$/.test(branchName));
@@ -10,11 +11,12 @@ const validateDirectoryName = ({workingDirectory}) =>
 
 async function run() {
 
-    const baseBranch = core.getInput('base-branch');
-    const targetBranch = core.getInput('target-branch');
-    const ghToken = core.getInput('gh-token');
-    const workingDirectory = core.getInput('working-directory');
-    const debug = core.getBooleanInput('debug');
+    const baseBranch = core.getInput('base-branch', {required: true});
+    const targetBranch = core.getInput('target-branch', {required: true});
+    const ghToken = core.getInput('gh-token', {required: true});
+    const workingDirectory = core.getInput('working-directory', {required: true});
+    const debug = core.getBooleanInput('debug', {required: true});
+    const commonExecOpts = { cwd: workingDirectory};
 
     core.setSecret('gh-token', ghToken);
 
@@ -36,13 +38,15 @@ async function run() {
     core.info(`[js-dependency-update]: base branch is ${baseBranch}`);
     core.info(`[js-dependency-update]: target branch is ${targetBranch}`);
     core.info(`[js-dependency-update]: working directory is ${workingDirectory}`);
+    core.info(`[js-dependency-update]: github token is ${ghToken}`);
+
 
     await exec.exec('npm update', [], {
-        cwd: workingDirectory
+        cwd: commonExecOpts,
     });
 
     const gitStatus = await exec.getExecOutput('git status -s package*.json', [], {
-        cwd: workingDirectory
+        cwd: commonExecOpts,
     });
 
     if (gitStatus.stdout.trim() === '') {
@@ -51,7 +55,39 @@ async function run() {
     }
     else{
         core.info('[js-dependency-update]: Updates found')
+        await exec.exec('git config --global user.name "gh-automation', [], {
+            cwd: commonExecOpts
+        });
+
+        await exec.exec('git config --global user.email "gh-automation@github.com', [], {
+            cwd: commonExecOpts
+        });
+
+        await exec.exec('git checkout -b ${targetBranch}', [], {
+            cwd: commonExecOpts
+        });
+
+        const octokit = github.getOctokit(ghToken);
+
+        try {
+            await octokit.rest.pulls.create({
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                title: `Update NPM dependencies`,
+                body: `This pull request updates NPM packages`,
+                base: baseBranch,
+                head: targetBranch
+            });
+        } catch (e) {
+            core.error('[js-dependency-update] : Something went wrong while creating the PR. Check logs below.')
+            core.setFailed(e.message);
+            core.error(e);
+        }
+
     }
+
+
+
 
     /*
     1. Parse inputs:
@@ -68,7 +104,7 @@ async function run() {
     6. If there are no updates, exit the action
      */
 
-    core.info('I am a custom JS action');
+    // core.info('I am a custom JS action');
 }
 
 run();
