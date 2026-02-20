@@ -49,10 +49,15 @@ async function run() {
         cwd: commonExecOpts,
     });
 
+
+    let updatesAvailable = false
     if (gitStatus.stdout.trim() === '') {
         core.info('[js-dependency-update]: No updates found');
     }
     else{
+        updatesAvailable = true
+        logger.debug(`Setting updates-available output to ${updatesAvailable}`)
+        core.setOutput('updates-available', true);
         core.info('[js-dependency-update]: Updates found')
         await exec.exec('git config --global user.name "gh-automation"', [], {
             cwd: commonExecOpts
@@ -95,6 +100,7 @@ async function run() {
             core.setFailed(e.message);
             core.error(e);
         }
+
 
     }
 
