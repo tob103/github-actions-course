@@ -1,8 +1,26 @@
 name: 17-2 - Custom Actions - JS
-run-name: 17-2 - Custom Actions - JS
+run-name: 17-2 - Custom Actions - JS | BB - ${{ inputs.base-branch }} - TB - ${{ inputs.target-branch }} - WD - ${{ inputs.working-directory }}
 on:
   workflow_dispatch:
-
+    inputs:
+      base-branch:
+        description: Base branch from which to check for updates
+        default: main
+        required: false
+      target-branch:
+        default: update-dependencies
+        description: Branch to which the PR will be created
+        required: false
+      working-directory:
+        description: Directory in which to run the action
+        required: true
+      gh-token:
+        description: Github token for authentication to create PRs. Must have write access to the repository
+        required: true
+      debug:
+        description: Enable debug logging
+        required: false
+        type: boolean
 jobs:
   dependency-update:
     runs-on: ubuntu-latest
@@ -11,8 +29,14 @@ jobs:
         working-directory: ./.github/actions/js-dependency-update
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Update dependencies
         uses: ./.github/actions/js-dependency-update
+        with:
+          base-branch: ${{ inputs.base-branch }}
+          target-branch: ${{ inputs.target-branch }}
+          working-directory: ${{ inputs.working-directory }}
+          gh-token: ${{ inputs.gh-token }}
+          debug: ${{ inputs.debug }}
 
 
