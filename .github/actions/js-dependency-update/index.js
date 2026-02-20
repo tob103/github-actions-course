@@ -37,15 +37,15 @@ async function run() {
     core.info(`[js-dependency-update]: target branch is ${targetBranch}`);
     core.info(`[js-dependency-update]: working directory is ${workingDirectory}`);
 
-    await exec.execu('npm update', [], {
+    await exec.exec('npm update', [], {
         cwd: workingDirectory
     });
 
-    const gitSttaus = await exec.getExecOutput('git status -s package*.json', [], {
+    const gitStatus = await exec.getExecOutput('git status -s package*.json', [], {
         cwd: workingDirectory
     });
 
-    if (gitSttaus.stdout.trim() === '') {
+    if (gitStatus.stdout.trim() === '') {
         core.info('[js-dependency-update]: No updates found')
         return;
     }
