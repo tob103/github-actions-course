@@ -1,37 +1,24 @@
-name: 17-2 - Custom Actions - JS
-run-name: 17-2 - Custom Actions - JS | BB - ${{ inputs.base-branch }} - TB - ${{ inputs.target-branch }} - WD - ${{ inputs.working-directory }}
+name: 17-3 - Custom Actions - Docker
+run-name: 17-3 - Custom Actions - Docker
 on:
   workflow_dispatch:
     inputs:
-      base-branch:
-        description: Base branch from which to check for updates
-        default: main
+      url:
+        type: string
+        default: 'https://www.google.com'
         required: false
-      target-branch:
-        default: update-dependencies
-        description: Branch to which the PR will be created
-        required: false
-      working-directory:
-        description: Directory in which to run the action
-        required: true
-        default: 17-custom-actions/react-app
-permissions:
-  contents: write
-  pull-requests: write
-
+        description: URL to ping
 jobs:
-  dependency-update:
+  ping-url:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Update dependencies
-        uses: ./.github/actions/js-dependency-update
+      - name: Ping Url
+        uses: ./.github/actions/docker-ping-url
         with:
-          base-branch: ${{ inputs.base-branch }}
-          target-branch: ${{ inputs.target-branch }}
-          working-directory: ${{ inputs.working-directory }}
-          gh-token: ${{ secrets.GITHUB_TOKEN }}
+         url: ${{ inputs.url }}
+
 
 
