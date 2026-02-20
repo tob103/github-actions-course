@@ -2,10 +2,10 @@ name: Ping Url
 author: olutosinbamigboye
 description: Ping url until maximum trials have exceeded. If result is not 200 until then, fail the action
 inputs:
-  url:
+  url: # Input_URL for shell script in Python
     required: true
     description: URL to ping
-  max_trials:
+  max_trials: #Input_Max_Trials for shell script in Python
     required: false
     default: '10'
     description: Maximum number of trials to ping the URL

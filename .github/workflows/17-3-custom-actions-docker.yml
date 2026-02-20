@@ -3,11 +3,17 @@ run-name: 17-3 - Custom Actions - Docker
 on:
   workflow_dispatch:
     inputs:
-      url:
-        type: string
-        default: 'https://www.google.com'
-        required: false
+      url: # Input_URL for shell script in Python
+        required: true
         description: URL to ping
+      max_trials: #Input_Max_Trials for shell script in Python
+        required: false
+        default: '10'
+        description: Maximum number of trials to ping the URL
+      delay:
+        required: true
+        default: '1'
+        description: Delay between trials in milliseconds
 jobs:
   ping-url:
     runs-on: ubuntu-latest
@@ -19,6 +25,8 @@ jobs:
         uses: ./.github/actions/docker-ping-url
         with:
          url: ${{ inputs.url }}
+         max_trials: ${{ inputs.max_trials }}
+         delay: ${{ inputs.delay }}
 
 
 
