@@ -23,7 +23,7 @@ inputs:
     description: Enable debug logging
     required: 'false'
     type: boolean
-uns:
+runs:
   using: node20
   main: index.js
 
