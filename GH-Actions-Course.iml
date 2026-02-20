@@ -2,7 +2,12 @@
 <module type="GENERAL_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/.github/actions/docker-ping-url/venv/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/.github/actions/docker-ping-url/venv/include" />
+      <excludeFolder url="file://$MODULE_DIR$/.github/actions/docker-ping-url/venv/lib" />
+    </content>
+    <orderEntry type="jdk" jdkName="Python 3.14 (Django Course) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
