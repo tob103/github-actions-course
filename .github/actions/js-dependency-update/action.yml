@@ -21,7 +21,8 @@ inputs:
 
   debug:
     description: Enable debug logging
-    required: 'false'
+    default: 'false'
+    required: false
     type: boolean
 runs:
   using: node20

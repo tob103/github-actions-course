@@ -50,8 +50,7 @@ async function run() {
     });
 
     if (gitStatus.stdout.trim() === '') {
-        core.info('[js-dependency-update]: No updates found')
-        return;
+        core.info('[js-dependency-update]: No updates found');
     }
     else{
         core.info('[js-dependency-update]: Updates found')
@@ -82,7 +81,7 @@ async function run() {
         const octokit = github.getOctokit(ghToken);
 
         try {
-            await octokit.rest.pulls.create({
+            const { data: pullRequest } = await octokit.rest.pulls.create({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
                 title: `Update NPM dependencies`,
@@ -90,6 +89,7 @@ async function run() {
                 base: baseBranch,
                 head: targetBranch
             });
+            core.info(`Pull request created: ${pullRequest.html_url}`);
         } catch (e) {
             core.error('[js-dependency-update] : Something went wrong while creating the PR. Check logs below.')
             core.setFailed(e.message);

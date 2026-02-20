@@ -30,12 +30,10 @@ permissions:
 jobs:
   dependency-update:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./.github/actions/js-dependency-update
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Update dependencies
         uses: ./.github/actions/js-dependency-update
         with:
