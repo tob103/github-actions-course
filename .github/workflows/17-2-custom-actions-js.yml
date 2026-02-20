@@ -15,14 +15,6 @@ on:
         description: Directory in which to run the action
         required: true
         default: 17-custom-actions/react-app
-      gh-token:
-        description: Github token for authentication to create PRs. Must have write access to the repository
-        required: false
-      debug:
-        description: Enable debug logging
-        required: false
-        type: boolean
-
 permissions:
   contents: write
   pull-requests: write
