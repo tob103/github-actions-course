@@ -15,7 +15,7 @@ async function run() {
     const targetBranch = core.getInput('target-branch', {required: true});
     const ghToken = core.getInput('gh-token', {required: true});
     const workingDirectory = core.getInput('working-directory', {required: true});
-    const debug = core.getBooleanInput('debug', {required: true});
+    const debug = core.getBooleanInput('debug', {required: false});
     const commonExecOpts = { cwd: workingDirectory};
 
     core.setSecret('gh-token', ghToken);
