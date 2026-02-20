@@ -18,12 +18,12 @@ async function run() {
 
     core.setSecret('gh-token', ghToken);
 
-    if (!validateBranch({branchName: baseBranch})) {
+    if (!validateBranchName({branchName: baseBranch})) {
         core.setFailed('Invalid base branch name. Branch name should include only letters, numbers, and special characters');
         return;
     }
 
-    if (!validateBranch({branchName: targetBranch})) {
+    if (!validateBranchName({branchName: targetBranch})) {
         core.setFailed('Invalid target branch name. Branch name should include only letters, numbers, and special characters');
         return;
     }
