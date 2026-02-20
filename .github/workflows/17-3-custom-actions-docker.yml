@@ -22,11 +22,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Ping Url
+        id: ping-url
         uses: ./.github/actions/docker-ping-url
         with:
          url: ${{ inputs.url }}
          max_trials: ${{ inputs.max_trials }}
          delay: ${{ inputs.delay }}
 
+      - name: Print custom action output
+        run: |
+          echo "Updates available: ${{ steps.ping-url.outputs.url-reachable }}"
+       
 
 

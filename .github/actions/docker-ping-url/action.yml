@@ -13,6 +13,11 @@ inputs:
     required: true
     default: '1'
     description: Delay between trials in milliseconds
+
+outputs:
+  url-reachable:
+    description: Website is reachable
+    value: ${{ steps.ping-url.outputs.website-reachable }}
 runs:
   using: docker
   image: Dockerfile
